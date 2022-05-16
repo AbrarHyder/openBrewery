@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         #navbar{
+            display: flex;
+            justify-content: space-evenly;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+
+        }
+        #navbar a{
+            text-decoration: none;
+            font-size: 30px;
+            color: burlywood;
+        }
+        #image{
+            width: 70%;
+            height: 250px;
+            padding-left: 15%;
+            
+        }
+        #container{
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap:25px;
+            padding: 5%;
+            justify-content: space-evenly;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar">
+        <div> <a href="./home.html">Home Page</a></div>
+        <div> <a href="./individual.html">Individual Brewery Page</a></div>
+        <div> <a href="./search.html">Search</a></div>
+    </div>
+    <img id="image" src="https://images.pexels.com/photos/941864/pexels-photo-941864.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
+    <br>
+
+    <input type="text" id="Brew" placeholder="Enter the Brew Name"/>
+    <button onclick="data()"> SEARCH </button>
+    
+    <div id="container"></div>
+    
+    
+
+    <script>
+        let container = document.getElementById("container");
+        // let url = "https://api.openbrewerydb.org/breweries/autocomplete?query={search}";
+
+        async function getData() {
+            try {
+                let res = await fetch(`https://api.openbrewerydb.org/breweries`);
+                let data = await res.json();
+                console.log(data)
+                displayData(data);
+            }
+            catch(error) {
+                console.log(error)
+            }
+        }
+        getData()
+        
+        function displayData(data) {
+            data.forEach(function (data) { 
+            // container.innerHTML="";
+
+            let brewCard = document.createElement("div");
+
+            let name = document.createElement("p");
+            name.textContent = "NAME : " + data.name;
+
+            let brewery_type = document.createElement("p");
+            brewery_type.textContent = "BREWERY TYPE : " + data.brewery_type;
+
+            let city = document.createElement("p");
+            city.textContent = "CITY : " + data.city;
+
+            let state = document.createElement("p");
+            state.textContent = "STATE : " +  data.state;
+
+            let moreDetails = document.createElement("button")
+            moreDetails.innerText = "More Details"
+
+            moreDetails.addEventListener("click", function() {
+                add(data)
+                console.log(bData);
+               
+            })
+
+            brewCard.append(name,brewery_type,city,state)
+            container.append(brewCard)
+
+        });
+        }
+    </script>
+</body>
+</html>
